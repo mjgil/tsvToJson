@@ -5,6 +5,7 @@ import (
 		"bufio"
 		"os"
 		"log"
+		"regexp"
 		)
 
 func main() {
@@ -19,6 +20,9 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		fmt.Println(scanner.Text())
+		scanText := scanner.Text()
+		regex := regexp.MustCompile("\t")
+		splitted := regex.Split(scanText, -1)
+		fmt.Println(splitted, len(splitted))
 	}
 }
