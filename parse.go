@@ -7,6 +7,7 @@ import (
 		"log"
 		"regexp"
 		"strings"
+		"encoding/json"
 		)
 
 func toCamelCase(str string) (string) {
@@ -20,7 +21,7 @@ func toCamelCase(str string) (string) {
 
 func main() {
 
-	fmt.Println("Hi There")
+	// fmt.Println("Hi There")
 	file, err := os.Open("test.tsv")
 
 	if err != nil {
@@ -31,11 +32,12 @@ func main() {
 	scanner := bufio.NewScanner(file)
 	first := 1
 	firstRow := []string{}
+	final := []map[string]string{}
 	for scanner.Scan() {
 		scanText := scanner.Text()
 		regex := regexp.MustCompile("\t")
 		splitted := regex.Split(scanText, -1)
-		fmt.Println(splitted, len(splitted))
+		// fmt.Println(splitted, len(splitted))
 		if first == 1 {
 			firstRow = splitted
 			first = 0
@@ -52,7 +54,16 @@ func main() {
 				// fmt.Println(strings.Trim(elem, "\""))
 				m[firstRow[index]] = strings.Trim(elem, "\"")
 			}
-			fmt.Println(m)
+			// fmt.Println(m)
+			final = append(final, m)
+			// fmt.Println(final)
 		}
 	}
+
+	binaryJson, _ := json.Marshal(final)
+	fmt.Println(string(binaryJson))
+
+	f, _ := os.Create("out.txt")
+    defer f.Close()
+    f.Write(binaryJson)
 }
