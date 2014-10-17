@@ -30,20 +30,29 @@ func main() {
 
 	scanner := bufio.NewScanner(file)
 	first := 1
+	firstRow := []string{}
 	for scanner.Scan() {
 		scanText := scanner.Text()
 		regex := regexp.MustCompile("\t")
 		splitted := regex.Split(scanText, -1)
 		fmt.Println(splitted, len(splitted))
 		if first == 1 {
-			fmt.Println("first")
+			firstRow = splitted
 			first = 0
-			for _, elem := range splitted {
-				fmt.Println(elem)
-				fmt.Println(toCamelCase(elem))
+			for index, elem := range splitted {
+				// fmt.Println(elem)
+				// fmt.Println(toCamelCase(elem))
+				firstRow[index] = toCamelCase(elem)
 			}
 		} else {
-			fmt.Println("else")
+			m := make(map[string] string)
+			// fmt.Println(firstRow)
+			for index, elem := range splitted {
+				// fmt.Println(elem)
+				// fmt.Println(strings.Trim(elem, "\""))
+				m[firstRow[index]] = strings.Trim(elem, "\"")
+			}
+			fmt.Println(m)
 		}
 	}
 }
