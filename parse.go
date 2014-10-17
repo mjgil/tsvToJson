@@ -22,7 +22,7 @@ func toCamelCase(str string) (string) {
 func main() {
 
 	// fmt.Println("Hi There")
-	file, err := os.Open("test.tsv")
+	file, err := os.Open("/Users/malcomgilbert/Downloads/Employees.txt")
 
 	if err != nil {
 		log.Fatal(err)
@@ -60,10 +60,10 @@ func main() {
 		}
 	}
 
-	binaryJson, _ := json.Marshal(final)
+	binaryJson, _ := json.MarshalIndent(final, "", "    ")
 	fmt.Println(string(binaryJson))
 
-	f, _ := os.Create("out.txt")
+	f, _ := os.Create("employees.json")
     defer f.Close()
     f.Write(binaryJson)
 }
